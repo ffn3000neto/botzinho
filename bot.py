@@ -2,22 +2,21 @@ import discord
 from discord.ext import commands
 import time 
 
+bot = discord.ext.commands.Bot(command_prefix = ".")
 
 
-
-bot = commands.Bot("!")
 
 a = 0
 
-palavraos = ["porra","bosta","buceta","caralho","fdp","soca","broxa","fofo",
-"sapequinha","bastardo","plebe","putifuro","foda-se","foder","fuder","nem fodendo",
-"pau","pica","pqp","punheta","cu","trepar","xoxota",'sacanagem','cacete','arrombado',
-"babaca",'bicha','boiola','cracudo','filha da puta','galinha','puta','piranha','vagabundo',
-'vagabunda','viado','corno','fudido','escroto','fudido','canalha','paspalho','trouxa','vaca',
-'vadia','otario','bostao','mongoloide','penes','poha','sexo','sex','droga','maconha','merda','lolo',
-'merdão','esporrada','fodinha','4lan','fodao','xvideos','pornhub','porrão','semen',]
+palavraos_file = open("palavras.txt", "r")
+file_content = palavraos_file.read()
 
-lenght = len(palavraos)
+palavraos_list = file_content.split("""
+""")
+palavraos_file.close()
+
+lenght = len(palavraos_list)
+
 @bot.event
 async def on_ready():
     print(f"Estou Pronto! Estou conectado como {bot.user}")
@@ -29,7 +28,7 @@ async def on_message(message):
     while op != lenght:
         if message.author == bot.user:
             return
-        if palavraos[op] in message.content:
+        if palavraos_list[op] in message.content:
             await message.channel.send(
                 f"Sem palavras de baixo calão por aqui {message.author.name}"
             )
@@ -45,5 +44,9 @@ async def send_hello(ctx):
 
     await ctx.send(response)
 
+token = 'MTAxMDE0OTY4MDYzNTcxMTU1OA.GU1tJ7.S6aPkMXJfyo7BmRXjpTxf_XiBBm94MW0Z3leUE'
 
-bot.run()
+intents = discord.all()
+intents.members = True
+
+bot = commands.Bot(command_prefix=".", intents=intents)
